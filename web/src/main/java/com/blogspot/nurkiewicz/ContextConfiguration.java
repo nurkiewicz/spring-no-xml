@@ -21,6 +21,9 @@ import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.AnnotationTransactionAttributeSource;
+import org.springframework.transaction.interceptor.TransactionAttributeSource;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 /**
  * @author Tomasz Nurkiewicz
@@ -90,6 +93,16 @@ public class ContextConfiguration {
 	@Bean
 	public AnnotationMBeanExporter annotationMBeanExporter() {
 		return new AnnotationMBeanExporter();
+	}
+
+	@Bean
+	public TransactionAttributeSource annotationTransactionAttributeSource() {
+		return new AnnotationTransactionAttributeSource();
+	}
+
+	@Bean
+	public TransactionInterceptor transactionInterceptor() {
+		return new TransactionInterceptor(transactionManager(), annotationTransactionAttributeSource());
 	}
 
 }
