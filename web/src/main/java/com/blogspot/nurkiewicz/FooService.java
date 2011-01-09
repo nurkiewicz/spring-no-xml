@@ -1,5 +1,6 @@
 package com.blogspot.nurkiewicz;
 
+import javax.annotation.Resource;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
@@ -11,16 +12,19 @@ import org.springframework.jms.core.JmsOperations;
 import org.springframework.jms.core.ProducerCallback;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Tomasz Nurkiewicz
  * @since 09.01.11, 14:21
  */
+@Service
 @ManagedResource
 public class FooService {
 
 	private static final Logger log = LoggerFactory.getLogger(FooService.class);
 
+	@Resource
 	private JmsOperations jmsOperations;
 
 	@ManagedOperation
@@ -37,7 +41,4 @@ public class FooService {
 		});
 	}
 
-	public void setJmsOperations(JmsOperations jmsOperations) {
-		this.jmsOperations = jmsOperations;
-	}
 }

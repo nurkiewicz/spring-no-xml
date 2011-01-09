@@ -11,18 +11,7 @@
 
 	<context:mbean-export />
 
-	<bean id="fooService" class="com.blogspot.nurkiewicz.FooService">
-		<property name="jmsOperations" ref="jmsTemplate" />
-	</bean>
-
-	<bean id="fooRequestProcessor" class="com.blogspot.nurkiewicz.FooRequestProcessor">
-		<property name="fooRepository" ref="fooRepository" />
-	</bean>
-
-	<bean id="fooRepository" class="com.blogspot.nurkiewicz.FooRepository" init-method="init">
-		<property name="jdbcOperations" ref="jdbcTemplate" />
-	</bean>
-
+	<context:component-scan base-package="com.blogspot.nurkiewicz"/>
 
 	<!-- JDBC -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
