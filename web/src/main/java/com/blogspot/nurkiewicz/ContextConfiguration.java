@@ -1,5 +1,6 @@
 package com.blogspot.nurkiewicz;
 
+import javax.annotation.Resource;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
 import javax.sql.DataSource;
@@ -15,6 +16,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.AbstractJmsListeningContainer;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
+import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -23,6 +27,9 @@ import org.springframework.transaction.PlatformTransactionManager;
  */
 @Configuration
 public class ContextConfiguration {
+
+	@Resource
+	private FooRequestProcessor fooRequestProcessor;
 
 	@Bean
 	public DataSource dataSource() {
@@ -60,6 +67,23 @@ public class ContextConfiguration {
 		final JmsTemplate jmsTemplate = new JmsTemplate(jmsConnectionFactory());
 		jmsTemplate.setDefaultDestination(requestsQueue());
 		return jmsTemplate;
+	}
+
+	@Bean
+	public AbstractJmsListeningContainer jmsContainer() {
+		final DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
+		container.setConnectionFactory(jmsConnectionFactory());
+		container.setDestination(requestsQueue());
+		container.setSessionTransacted(true);
+		container.setConcurrentConsumers(5);
+		container.setMessageListener(messageListenerAdapter());
+		return container;
+	}
+
+	private MessageListenerAdapter messageListenerAdapter() {
+		final MessageListenerAdapter adapter = new MessageListenerAdapter(fooRequestProcessor);
+		adapter.setDefaultListenerMethod("process");
+		return adapter;
 	}
 
 }

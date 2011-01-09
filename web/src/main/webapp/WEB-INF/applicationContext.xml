@@ -15,19 +15,4 @@
 
 	<tx:annotation-driven />
 
-
-	<!-- JMS -->
-	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-		<property name="connectionFactory" ref="jmsConnectionFactory" />
-		<property name="destination" ref="requestsQueue" />
-		<property name="sessionTransacted" value="true"/>
-		<property name="concurrentConsumers" value="5"/>
-		<property name="messageListener">
-			<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-				<constructor-arg ref="fooRequestProcessor" />
-				<property name="defaultListenerMethod" value="process"/>
-			</bean>
-		</property>
-	</bean>
-
 </beans>
