@@ -29,7 +29,7 @@ public class FooService {
 
 	@ManagedOperation
 	public String sendRequest(final String request) {
-		log.info("Handling request: {}", request);
+		log.info("Handling request: '{}'", request);
 		return jmsOperations.execute(new ProducerCallback<String>() {
 			@Override
 			public String doInJms(Session session, MessageProducer producer) throws JMSException {

@@ -23,7 +23,7 @@ public class FooRepository {
 
 	@PostConstruct
 	public void init() {
-		log.info("Daabase server time is: {}", jdbcOperations.queryForObject("SELECT CURRENT_TIMESTAMP", Date.class));
+		log.info("Database server time is: {}", jdbcOperations.queryForObject("SELECT CURRENT_TIMESTAMP", Date.class));
 	}
 
 	public void persistRequest(String request) {
