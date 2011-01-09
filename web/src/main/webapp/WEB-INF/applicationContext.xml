@@ -13,26 +13,10 @@
 
 	<context:component-scan base-package="com.blogspot.nurkiewicz"/>
 
-	<!-- JDBC -->
 	<tx:annotation-driven />
 
 
 	<!-- JMS -->
-	<bean id="jmsConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
-		<constructor-arg>
-			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
-				<property name="brokerURL" value="tcp://localhost:61616" />
-			</bean>
-		</constructor-arg>
-	</bean>
-
-	<amq:queue id="requestsQueue" physicalName="requests" />
-
-	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<constructor-arg ref="jmsConnectionFactory" />
-		<property name="defaultDestination" ref="requestsQueue" />
-	</bean>
-
 	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="jmsConnectionFactory" />
 		<property name="destination" ref="requestsQueue" />
