@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			 http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.4.2.xsd
+			 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:mbean-export />
+
+	<bean id="fooService" class="com.blogspot.nurkiewicz.FooService">
+		<property name="jmsOperations" ref="jmsTemplate" />
+	</bean>
+
+	<bean id="fooRequestProcessor" class="com.blogspot.nurkiewicz.FooRequestProcessor">
+		<property name="fooRepository" ref="fooRepository" />
+	</bean>
+
+	<bean id="fooRepository" class="com.blogspot.nurkiewicz.FooRepository" init-method="init">
+		<property name="jdbcOperations" ref="jdbcTemplate" />
+	</bean>
+
+
+	<!-- JDBC -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.h2.Driver" />
+		<property name="url" value="jdbc:h2:~/workspace/h2/spring-noxmal;DB_CLOSE_ON_EXIT=FALSE;TRACE_LEVEL_FILE=4;AUTO_SERVER=TRUE" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven />
+
+
+	<!-- JMS -->
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+		<constructor-arg>
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL" value="tcp://localhost:61616" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<amq:queue id="requestsQueue" physicalName="requests" />
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="jmsConnectionFactory" />
+		<property name="defaultDestination" ref="requestsQueue" />
+	</bean>
+
+	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="destination" ref="requestsQueue" />
+		<property name="sessionTransacted" value="true"/>
+		<property name="concurrentConsumers" value="5"/>
+		<property name="messageListener">
+			<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+				<constructor-arg ref="fooRequestProcessor" />
+				<property name="defaultListenerMethod" value="process"/>
+			</bean>
+		</property>
+	</bean>
+
+</beans>

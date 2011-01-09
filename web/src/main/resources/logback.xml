@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<contextName>noxml</contextName>
+	<jmxConfigurator />
+
+	<logger name="h2database" level="WARN"/>
+	<logger name="org.springframework" level="INFO" />
+	<logger name="org.apache.activemq" level="INFO" />
+
+	<root level="ALL">
+		<appender class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>../logs/spring-noxml.log</file>
+			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+				<fileNamePattern>../logs/spring-noxml.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+				<maxHistory>120</maxHistory>
+			</rollingPolicy>
+
+			<encoder>
+				<pattern>%date{ISO8601} | %thread | %-5level | %logger{1} | %msg%n</pattern>
+			</encoder>
+		</appender>
+	</root>
+</configuration>
