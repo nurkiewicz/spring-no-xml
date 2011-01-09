@@ -9,8 +9,6 @@
 			 http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.4.2.xsd
 			 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:mbean-export />
-
 	<context:component-scan base-package="com.blogspot.nurkiewicz"/>
 
 	<tx:annotation-driven />

@@ -19,6 +19,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.AbstractJmsListeningContainer;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
+import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -84,6 +85,11 @@ public class ContextConfiguration {
 		final MessageListenerAdapter adapter = new MessageListenerAdapter(fooRequestProcessor);
 		adapter.setDefaultListenerMethod("process");
 		return adapter;
+	}
+
+	@Bean
+	public AnnotationMBeanExporter annotationMBeanExporter() {
+		return new AnnotationMBeanExporter();
 	}
 
 }
