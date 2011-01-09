@@ -14,6 +14,7 @@
 
 	<modules>
 		<module>web</module>
+		<module>web-fragment</module>
 	</modules>
 
 	<build>
