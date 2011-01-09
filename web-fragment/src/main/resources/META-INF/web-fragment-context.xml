@@ -7,7 +7,6 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        ">
 
-	<!-- TODO: see org.springframework.context.annotation.ComponentScanBeanDefinitionParser.parse to fix hard-coded packages -->
-	<context:component-scan base-package="com, net, org, pl, ch" />
+	<context:component-scan base-package="." />
 
 </beans>
