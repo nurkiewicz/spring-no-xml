@@ -14,14 +14,6 @@
 	<context:component-scan base-package="com.blogspot.nurkiewicz"/>
 
 	<!-- JDBC -->
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<constructor-arg ref="dataSource" />
-	</bean>
-
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<constructor-arg ref="dataSource" />
-	</bean>
-
 	<tx:annotation-driven />
 
 
