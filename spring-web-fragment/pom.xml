@@ -8,7 +8,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<name>Spring framework without XML web fragment</name>
-	<artifactId>web-fragment</artifactId>
+	<artifactId>spring-web-fragment</artifactId>
 
 	<dependencies>
 		<!-- Web -->

@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.blogspot.nurkiewicz.springframework</groupId>
-			<artifactId>web-fragment</artifactId>
+			<artifactId>spring-web-fragment</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 

@@ -14,7 +14,7 @@
 
 	<modules>
 		<module>web</module>
-		<module>web-fragment</module>
+		<module>spring-web-fragment</module>
 	</modules>
 
 	<build>
