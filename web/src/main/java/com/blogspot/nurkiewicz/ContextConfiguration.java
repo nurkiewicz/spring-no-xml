@@ -35,7 +35,7 @@ public class ContextConfiguration {
 	@Resource
 	private FooRequestProcessor fooRequestProcessor;
 
-	@Bean
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		final BasicDataSource ds = new BasicDataSource();
 		ds.setDriverClassName("org.h2.Driver");
