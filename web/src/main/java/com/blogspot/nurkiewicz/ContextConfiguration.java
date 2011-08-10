@@ -1,14 +1,10 @@
 package com.blogspot.nurkiewicz;
 
-import javax.annotation.Resource;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
-import javax.sql.DataSource;
-
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.pool.PooledConnectionFactory;
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -25,6 +21,11 @@ import org.springframework.transaction.annotation.AnnotationTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
+import javax.annotation.Resource;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
+import javax.sql.DataSource;
+
 /**
  * @author Tomasz Nurkiewicz
  * @since 09.01.11, 18:17
@@ -32,14 +33,21 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 @Configuration
 public class ContextConfiguration {
 
+	public ContextConfiguration() {
+		System.out.println("");
+	}
+
 	@Resource
 	private FooRequestProcessor fooRequestProcessor;
+
+	@Value("#{environment.jdbcUrl}")
+	private String jdbcUrl;// = "jdbc:h2:~/workspace/h2/spring-noxmal;DB_CLOSE_ON_EXIT=FALSE;TRACE_LEVEL_FILE=4;AUTO_SERVER=TRUE";
 
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		final BasicDataSource ds = new BasicDataSource();
 		ds.setDriverClassName("org.h2.Driver");
-		ds.setUrl("jdbc:h2:~/workspace/h2/spring-noxmal;DB_CLOSE_ON_EXIT=FALSE;TRACE_LEVEL_FILE=4;AUTO_SERVER=TRUE");
+		ds.setUrl(jdbcUrl);
 		ds.setUsername("sa");
 		return ds;
 	}
