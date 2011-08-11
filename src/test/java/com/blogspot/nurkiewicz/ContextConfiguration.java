@@ -7,10 +7,6 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 
-/**
- * @author Tomasz Nurkiewicz
- * @since 09.01.11, 18:17
- */
 @Configuration
 public class ContextConfiguration {
 
